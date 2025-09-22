@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Exam Performance Indicator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #1a1a2e; /* Dark background */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #e0e0e0; /* Light text for contrast */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            max-width: 650px; /* Slightly wider for better presentation */
+            padding: 3rem;
+            background-color: #2e2e4a; /* Slightly lighter dark for form background */
+            border-radius: 12px; /* More rounded corners */
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4); /* Deeper shadow for depth */
+            border: 1px solid #3a3a5e; /* Subtle border */
+        }
+        h1, h2, legend {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #ffffff; /* White headings */
+            font-weight: 600;
+        }
+        .form-label {
+            font-weight: 400;
+            color: #c0c0c0; /* Slightly dim labels */
+            margin-bottom: 0.5rem;
+        }
+        .form-control, .form-select {
+            background-color: #3e3e5e; /* Darker input background */
+            color: #e0e0e0; /* Input text color */
+            border: 1px solid #5a5a7a; /* Input border color */
+            border-radius: 8px; /* Rounded inputs */
+            padding: 0.75rem 1rem; /* More padding */
+        }
+        .form-control::placeholder, .form-select .placeholder {
+            color: #8888aa; /* Placeholder text color */
+        }
+        .form-control:focus, .form-select:focus {
+            background-color: #4a4a6e;
+            border-color: #8a8af0; /* Highlight focus with a subtle purple/blue */
+            box-shadow: 0 0 0 0.25rem rgba(138, 138, 240, 0.25);
+            color: #ffffff;
+        }
+        .form-select option {
+            background-color: #2e2e4a; /* Dropdown options background */
+            color: #e0e0e0; /* Dropdown options text color */
+        }
+        .btn-primary {
+            width: 100%;
+            background-color: #8a8af0; /* Classy purple/blue button */
+            border-color: #8a8af0;
+            padding: 0.75rem 1.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .btn-primary:hover {
+            background-color: #6a6ad0; /* Darker on hover */
+            border-color: #6a6ad0;
+            transform: translateY(-2px); /* Subtle lift effect */
+            box-shadow: 0 4px 10px rgba(138, 138, 240, 0.4);
+        }
+        .result-box {
+            margin-top: 2.5rem;
+            padding: 2rem;
+            background-color: #3e3e5e; /* Result box background */
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #a0a0ff; /* Highlight result text */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            border: 1px solid #5a5a7a;
+        }
+        /* Optional: Improve contrast for disabled selected option */
+        .form-select option.placeholder {
+            color: #a0a0a0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container my-5">
+        <h1>Student Exam Performance Indicator</h1>
+        <form action="{{ url_for('predict_datapoint')}}" method="post">
+            <h2 class="mb-4">
+                <legend class="border-bottom pb-3">Student Exam Performance Prediction</legend>
+            </h2>
+            <div class="mb-3">
+                <label class="form-label">Gender</label>
+                <select class="form-select" name="gender" required>
+                    <option class="placeholder" selected disabled value="">Select your Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Race or Ethnicity</label>
+                <select class="form-select" name="ethnicity" required>
+                    <option class="placeholder" selected disabled value="">Select Ethnicity</option>
+                    <option value="group A">Group A</option>
+                    <option value="group B">Group B</option>
+                    <option value="group C">Group C</option>
+                    <option value="group D">Group D</option>
+                    <option value="group E">Group E</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Parental Level of Education</label>
+                <select class="form-select" name="parental_level_of_education" required>
+                    <option class="placeholder" selected disabled value="">Select Parent Education</option>
+                    <option value="associate's degree">associate's degree</option>
+                    <option value="bachelor's degree">bachelor's degree</option>
+                    <option value="high school">high school</option>
+                    <option value="master's degree">master's degree</option>
+                    <option value="some college">some college</option>
+                    <option value="some high school">some high school</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Lunch Type</label>
+                <select class="form-select" name="lunch" required>
+                    <option class="placeholder" selected disabled value="">Select Lunch Type</option>
+                    <option value="free/reduced">free/reduced</option>
+                    <option value="standard">standard</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Test preparation Course</label>
+                <select class="form-select" name="test_preparation_course" required>
+                    <option class="placeholder" selected disabled value="">Select Test_course</option>
+                    <option value="none">None</option>
+                    <option value="completed">Completed</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Writing Score out of 100</label>
+                <input class="form-control" type="number" name="writing_score" placeholder="Enter your Writing Score" min='0' max='100' required/>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Reading Score out of 100</label>
+                <input class="form-control" type="number" name="reading_score" placeholder="Enter your Reading Score" min='0' max='100' required/>
+            </div>
+            <div class="mb-4"> <input class="btn btn-primary" type="submit" value="Predict your Maths Score" />
+            </div>
+        </form>
+        <div class="result-box">
+            THE prediction is {{results}}
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
+</html>
